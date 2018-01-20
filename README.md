@@ -10,6 +10,6 @@ OR
 
 `>bin/bitmap_editor examples/from_requirements.txt`
 
-Authors
+# Authors
 ...
-Faisal Iqbal<fiqbal.qureshi@outlook.com>
+Faisal Iqbal <fiqbal.qureshi@outlook.com>
