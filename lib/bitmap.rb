@@ -23,6 +23,13 @@ class Bitmap
         end
     end
 
+    def get_pixel_color(x, y)
+        x = ensure_valid_x_index(x)
+        y = ensure_valid_y_index(y)
+
+        @data[y][x]
+    end
+
     def color(x, y, color)
         x = ensure_valid_x_index(x)
         y = ensure_valid_y_index(y)
@@ -51,10 +58,11 @@ class Bitmap
     end
 
     def clear
-        max_rows = @row_size - 1
-        max_column = @column_size - 1
-        (0..max_rows).each do |y|
-            (0..max_column).each do |x|
+        max_y = @row_size - 1
+        max_x = @column_size - 1
+
+        (0..max_y).each do |y|
+            (0..max_x).each do |x|
                 @data[y][x] = DEFAULT_COLOR
             end
         end
@@ -84,21 +92,21 @@ class Bitmap
     end
 
     def ensure_valid_index(indx, size)
-		valid_indx = indx.to_i - 1
-		if valid_indx < 0
-			valid_indx = 0
-		end
-		if valid_indx >= size
-			valid_indx = size - 1
-		end
-		valid_indx
+        valid_indx = indx.to_i - 1
+        if valid_indx < 0
+            valid_indx = 0
+        end
+        if valid_indx >= size
+            valid_indx = size - 1
+        end
+        valid_indx
     end
 
-	def ensure_valid_y_index(indx)
-		ensure_valid_index(indx, @row_size)
+    def ensure_valid_y_index(indx)
+        ensure_valid_index(indx, @row_size)
     end
 
-	def ensure_valid_x_index(indx)
+    def ensure_valid_x_index(indx)
         ensure_valid_index(indx, @column_size)
     end
 end
