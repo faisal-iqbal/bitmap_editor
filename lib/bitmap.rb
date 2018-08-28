@@ -24,38 +24,29 @@ class Bitmap
     end
 
     def color(x, y, color)
-        x = ensure_valid_index(x)
-        y = ensure_valid_index(y)
-        if x > -1 and y > -1
-            if !@data[y].nil? and !@data[y][x].nil?
-                @data[y][x] = color
-            end
-        end
+        x = ensure_valid_x_index(x)
+        y = ensure_valid_y_index(y)
+
+        @data[y][x] = color
     end
 
     def vertical_segment(x, y1, y2, color)
-        x = ensure_valid_index(x)
-        y1 = ensure_valid_index(y1)
-        y2 = ensure_valid_index(y2)
-        if x > -1 and y1 > -1 and y2 > -1
-            (y1..y2).each do |y|
-                if x > 0 and y > 0 and !@data[y].nil? and !@data[y][x].nil?
-                    @data[y][x] = color
-                end
-            end
+        x = ensure_valid_x_index(x)
+        y1 = ensure_valid_y_index(y1)
+        y2 = ensure_valid_y_index(y2)
+
+        (y1..y2).each do |y|
+            @data[y][x] = color
         end
     end
 
     def horizontal_segment(x1, x2, y, color)
-        x1 = ensure_valid_index(x1)
-        x2 = ensure_valid_index(x2)
-        y = ensure_valid_index(y)
-        if x1 > -1 and x2 > -1 and y > -1
-            (x1..x2).each do |x|
-                if !@data[y].nil? and !@data[y][x].nil?
-                    @data[y][x] = color
-                end
-            end
+        x1 = ensure_valid_x_index(x1)
+        x2 = ensure_valid_x_index(x2)
+        y = ensure_valid_y_index(y)
+
+        (x1..x2).each do |x|
+            @data[y][x] = color
         end
     end
 
@@ -92,7 +83,22 @@ class Bitmap
         size
     end
 
-    def ensure_valid_index(indx)
-        indx.to_i - 1
+    def ensure_valid_index(indx, size)
+		valid_indx = indx.to_i - 1
+		if valid_indx < 0
+			valid_indx = 0
+		end
+		if valid_indx >= size
+			valid_indx = size - 1
+		end
+		valid_indx
+    end
+
+	def ensure_valid_y_index(indx)
+		ensure_valid_index(indx, @row_size)
+    end
+
+	def ensure_valid_x_index(indx)
+        ensure_valid_index(indx, @column_size)
     end
 end

@@ -80,24 +80,16 @@ describe Bitmap do
 
         it "handles zero input for color" do
             bitmap = Bitmap.new(5, 6)
-            bitmap.color(0, 3, 'A')
+            bitmap.color(0, 3, 'A') # row/coulumn values starts with 1, any value below 1 will be rounded to 1
 
-            bitmap.data.each do |row|
-                row.each do |pixel|
-                    expect(pixel).not_to eq 'A' # no pixel should be 'A'
-                end
-            end
+			expect(bitmap.data[2][0]).to eq 'A' # column value 0 will be rounded to column value 1
         end
 
         it "handles out-of-bound input for color" do
             bitmap = Bitmap.new(5, 6)
-            bitmap.color(1, 8, 'A')
+            bitmap.color(1, 8, 'A') # row/coulumn values could not exceed bitmap diminsions, any value more then bitmap diminsions will be rounded to bitmap diminsion
 
-            bitmap.data.each do |row|
-                row.each do |pixel|
-                    expect(pixel).not_to eq 'A' # no pixel should be 'A'
-                end
-            end
+			expect(bitmap.data[5][0]).to eq 'A' # row value 8 will be rounded to row value 6
         end
     end
 
@@ -120,13 +112,18 @@ describe Bitmap do
 
         it "handles zero input for vertical_segment" do
             bitmap = Bitmap.new(5, 6)
-            bitmap.vertical_segment(0, 3, 6, 'W')
+            bitmap.vertical_segment(0, 3, 6, 'W') # row/coulumn values starts with 1, any value below 1 will be rounded to 1
+			
+			expected = [
+                ['O', 'O', 'O', 'O', 'O'],
+                ['O', 'O', 'O', 'O', 'O'],
+                ['W', 'O', 'O', 'O', 'O'],
+                ['W', 'O', 'O', 'O', 'O'],
+                ['W', 'O', 'O', 'O', 'O'],
+                ['W', 'O', 'O', 'O', 'O']
+            ]
 
-            bitmap.data.each do |row|
-                row.each do |pixel|
-                    expect(pixel).not_to eq 'W' # no pixel should be 'W'
-                end
-            end
+			expect(bitmap.data).to match_array(expected)
         end
 
         it "handles out-of-bound input for vertical_segment" do
@@ -165,13 +162,18 @@ describe Bitmap do
 
         it "handles zero input for horizontal_segment" do
             bitmap = Bitmap.new(5, 6)
-            bitmap.horizontal_segment(0, 5, 2, 'Z')
+            bitmap.horizontal_segment(0, 5, 2, 'Z') # row/coulumn values starts with 1, any value below 1 will be rounded to 1
+			
+			expected = [
+                ['O', 'O', 'O', 'O', 'O'],
+                ['Z', 'Z', 'Z', 'Z', 'Z'],
+                ['O', 'O', 'O', 'O', 'O'],
+                ['O', 'O', 'O', 'O', 'O'],
+                ['O', 'O', 'O', 'O', 'O'],
+                ['O', 'O', 'O', 'O', 'O']
+            ]
 
-            bitmap.data.each do |row|
-                row.each do |pixel|
-                    expect(pixel).not_to eq 'Z' # no pixel should be 'Z'
-                end
-            end
+            expect(bitmap.data).to match_array(expected)
         end
 
         it "handles out-of-bound input for horizontal_segment" do
