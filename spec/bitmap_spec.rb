@@ -231,6 +231,55 @@ describe Bitmap do
                 end
             end
         end
+
+        it "Edit after clear" do
+            bitmap = Bitmap.new(5, 6)
+            bitmap.horizontal_segment(3, 5, 2, 'Z')
+
+            expected = [
+                ['O', 'O', 'O', 'O', 'O'],
+                ['O', 'O', 'Z', 'Z', 'Z'],
+                ['O', 'O', 'O', 'O', 'O'],
+                ['O', 'O', 'O', 'O', 'O'],
+                ['O', 'O', 'O', 'O', 'O'],
+                ['O', 'O', 'O', 'O', 'O']
+            ]
+
+            expect(bitmap.data).to match_array(expected)
+
+            bitmap.clear()
+
+            bitmap.data.each do |row|
+                row.each do |pixel|
+                    expect(pixel).not_to eq 'Z' # no pixel should be 'Z' after clear
+                end
+            end
+
+            bitmap.horizontal_segment(3, 5, 2, 'Z')
+
+            expect(bitmap.data).to match_array(expected) 
+        end
+
+        it "Reinitialize after clear" do
+            bitmap = Bitmap.new(5, 6)
+            bitmap.horizontal_segment(3, 5, 2, 'Z')
+
+            bitmap.clear()
+
+            bitmap.data.each do |row|
+                row.each do |pixel|
+                    expect(pixel).not_to eq 'Z' # no pixel should be 'Z' after clear
+                end
+            end
+
+            bitmap = Bitmap.new(5, 1)
+            bitmap.horizontal_segment(3, 5, 1, 'Z')
+
+            expected = [
+                ['O', 'O', 'Z', 'Z', 'Z'],
+            ]
+            expect(bitmap.data).to match_array(expected) 
+        end
     end
 
     context "Show" do
